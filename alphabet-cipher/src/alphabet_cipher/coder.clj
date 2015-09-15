@@ -42,14 +42,21 @@
       (apply str (map #(get (get m %2) %1) msgs kwds)))))
 
 (def encode (fn [kwd msg] (cypher-with-map msg kwd encode-map)))
-; (def
-;   encode (fn [msg, kwd]
-;            (let [msgs (phrase-to-seq msg)
-;                  rptc (inc (quot (count msg) (count kwd)))
-;                  kwds (take
-;                         (count msgs)
-;                         (phrase-to-seq (apply str (repeat rptc kwd))))]
-;              (apply str (map #(get (get encode-map %2) %1) msgs kwds))))
-;   )
 
 (def decode (fn [kwd msg] (cypher-with-map msg kwd decode-map)))
+
+(defn decypher [cypher message]
+  (let [repeating (decode message cypher)
+        n         (count repeating)]
+    (->> (range 1 (inc n))
+         (map #(apply str (take % repeating)))
+         (filter #(= cypher (encode % message)))
+         first
+         )
+    )
+  )
+
+#_(
+   (load-file "src/alphabet_cipher/coder.clj")(use 'alphabet-cipher.coder)
+   (decypher "opkyfipmfmwcvqoklyhxywgeecpvhelzg" "thequickbrownfoxjumpsoveralazydog")
+   )
