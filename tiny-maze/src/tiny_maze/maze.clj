@@ -43,22 +43,24 @@
 
 
 (defrecord Maze
-  [maze  ;; Maze itself
-   size  ;; Dimensions of maze
-   start ;; Start point
-   end   ;; End point
-   walls ;; Wall coordinates
-   open  ;; Open coordinates
+  [maze    ;; Maze itself
+   size    ;; Dimensions of maze
+   start   ;; Start point
+   end     ;; End point
+   walls   ;; Wall coordinates
+   open    ;; Open coordinates
+   visited ;; Set of visited coordinates
    ])
 
 
 (defn create-maze [mz]
-  (map->Maze {:maze  mz,
-              :size  (maze-size mz),
-              :start (start-coords mz),
-              :end   (end-coords mz),
-              :walls (wall-coords mz),
-              :open  (empty-coords mz),
+  (map->Maze {:maze    mz,
+              :size    (maze-size mz),
+              :start   (start-coords mz),
+              :end     (end-coords mz),
+              :walls   (wall-coords mz),
+              :open    (empty-coords mz),
+              :visited #{},
               }))
 
 #_(
